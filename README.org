@@ -1,0 +1,56 @@
+#+title: Using VirtualGL and TurboVNC with 64-bit Linux For Tegra R24.1
+
+Largely based on /demotomohiro/ posts from [[https://devtalk.nvidia.com/default/topic/828974/jetson-tk1/-howto-install-virtualgl-and-turbovnc-to-jetson-tk1/2][NVidia's forum]].
+
+* Build & Install
+
+#+begin_example
+chmod +x ./tx1_build_and_install_vgl_and_vnc.sh
+./tx1_build_and_install_vgl_and_vnc.sh
+#+end_example
+
+* Configure
+
+While configuring VirtualGL you may answer yes to all. (See https://cdn.rawgit.com/VirtualGL/virtualgl/2.5/doc/index.html#hd006 for more information).
+
+#+begin_example
+chmod +x ./tx1_build_and_install_vgl_and_vnc.sh
+./tx1_configure_vgl_and_vnc.sh
+#+end_example
+
+If you see only black screen, try turning of screen-saver.
+
+* Running
+
+On client side, run the following:
+#+begin_example
+ssh -L {5900+n}:localhost:{5900+n} {user}@{server}
+#+end_example
+where 
+- {user} is your username
+- {server} is the hostname or IP address of that machine
+- n is the X display number of the TurboVNC session to which you want to connect.
+For example:
+#+begin_example
+ssh -L 5901:localhost:5901 ubuntu@ubuntu-tegra
+#+end_example
+See https://cdn.rawgit.com/TurboVNC/turbovnc/2.0/doc/index.html#hd006005 for more information.
+
+Once in ssh session, run (on server side) either:
+#+begin_example
+/opt/TurboVNC/bin/vncserver
+#+end_example
+or if it is already in path
+#+begin_example
+vncserver
+#+end_example
+
+Then in another terminal, on client side
+#+begin_example
+vncviewer localhost:1
+#+end_example
+
+In order, to stop TurboVNC on server side run:
+#+begin_example
+vncserver -kill :1
+#+end_example
